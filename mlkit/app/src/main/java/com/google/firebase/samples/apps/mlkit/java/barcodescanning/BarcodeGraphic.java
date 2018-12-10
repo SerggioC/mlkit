@@ -22,50 +22,52 @@ import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode;
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay;
 import com.google.firebase.samples.apps.mlkit.common.GraphicOverlay.Graphic;
 
-/** Graphic instance for rendering Barcode position and content information in an overlay view. */
+/**
+ * Graphic instance for rendering Barcode position and content information in an overlay view.
+ */
 public class BarcodeGraphic extends Graphic {
 
-  private static final int TEXT_COLOR = Color.WHITE;
-  private static final float TEXT_SIZE = 54.0f;
-  private static final float STROKE_WIDTH = 4.0f;
+    private static final int TEXT_COLOR = Color.GREEN;
+    private static final float TEXT_SIZE = 54.0f;
+    private static final float STROKE_WIDTH = 8.0f;
 
-  private final Paint rectPaint;
-  private final Paint barcodePaint;
-  private final FirebaseVisionBarcode barcode;
+    private final Paint rectPaint;
+    private final Paint barcodePaint;
+    private final FirebaseVisionBarcode barcode;
 
-  BarcodeGraphic(GraphicOverlay overlay, FirebaseVisionBarcode barcode) {
-    super(overlay);
+    BarcodeGraphic(GraphicOverlay overlay, FirebaseVisionBarcode barcode) {
+        super(overlay);
 
-    this.barcode = barcode;
+        this.barcode = barcode;
 
-    rectPaint = new Paint();
-    rectPaint.setColor(TEXT_COLOR);
-    rectPaint.setStyle(Paint.Style.STROKE);
-    rectPaint.setStrokeWidth(STROKE_WIDTH);
+        rectPaint = new Paint();
+        rectPaint.setColor(TEXT_COLOR);
+        rectPaint.setStyle(Paint.Style.STROKE);
+        rectPaint.setStrokeWidth(STROKE_WIDTH);
 
-    barcodePaint = new Paint();
-    barcodePaint.setColor(TEXT_COLOR);
-    barcodePaint.setTextSize(TEXT_SIZE);
-  }
-
-  /**
-   * Draws the barcode block annotations for position, size, and raw value on the supplied canvas.
-   */
-  @Override
-  public void draw(Canvas canvas) {
-    if (barcode == null) {
-      throw new IllegalStateException("Attempting to draw a null barcode.");
+        barcodePaint = new Paint();
+        barcodePaint.setColor(TEXT_COLOR);
+        barcodePaint.setTextSize(TEXT_SIZE);
     }
 
-    // Draws the bounding box around the BarcodeBlock.
-    RectF rect = new RectF(barcode.getBoundingBox());
-    rect.left = translateX(rect.left);
-    rect.top = translateY(rect.top);
-    rect.right = translateX(rect.right);
-    rect.bottom = translateY(rect.bottom);
-    canvas.drawRect(rect, rectPaint);
+    /**
+     * Draws the barcode block annotations for position, size, and raw value on the supplied canvas.
+     */
+    @Override
+    public void draw(Canvas canvas) {
+        if (barcode == null) {
+            throw new IllegalStateException("Attempting to draw a null barcode.");
+        }
 
-    // Renders the barcode at the bottom of the box.
-    canvas.drawText(barcode.getRawValue(), rect.left, rect.bottom, barcodePaint);
-  }
+        // Draws the bounding box around the BarcodeBlock.
+        RectF rect = new RectF(barcode.getBoundingBox());
+        rect.left = translateX(rect.left) + 2;
+        rect.top = translateY(rect.top) + 2;
+        rect.right = translateX(rect.right) + 2;
+        rect.bottom = translateY(rect.bottom) + 2;
+        canvas.drawRect(rect, rectPaint);
+
+        // Renders the barcode at the bottom of the box.
+        canvas.drawText(barcode.getRawValue(), rect.left, rect.bottom + 4, barcodePaint);
+    }
 }

@@ -10,7 +10,7 @@ public class CameraImageGraphic extends Graphic {
 
     private final Bitmap bitmap;
 
-    public CameraImageGraphic(GraphicOverlay overlay, Bitmap bitmap) {
+    public CameraImageGraphic(GraphicOverlay overlay, Bitmap bitmap /* camera Image */) {
         super(overlay);
         this.bitmap = bitmap;
     }
